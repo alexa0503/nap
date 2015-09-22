@@ -21,7 +21,7 @@ class DefaultController extends Controller
 	 */
 	public function indexAction()
 	{
-		return $this->redirect('main.html');
+		return $this->redirect('index.html');
 		//return $this->render('AppBundle:default:index.html.twig');
 	}
 	/**
