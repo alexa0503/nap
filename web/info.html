@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title></title>
+<link rel="stylesheet" href="css/common.css">
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/touch.js"></script>
+
+<!--移动端版本兼容 -->
+<script type="text/javascript">
+         var phoneWidth =  parseInt(window.screen.width);
+         var phoneScale = phoneWidth/640;
+         var ua = navigator.userAgent;
+         if (/Android (\d+\.\d+)/.test(ua)){
+                   var version = parseFloat(RegExp.$1);
+                   if(version>2.3){
+                            document.write('<meta name="viewport" content="width=640, minimum-scale = '+phoneScale+', maximum-scale = '+phoneScale+', target-densitydpi=device-dpi">');
+                   }else{
+                            document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi">');
+                   }
+         } else {
+                   document.write('<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">');
+         }
+</script>
+<!--移动端版本兼容 end -->
+
+</head>
+
+<body>
+<audio src="images/bgm.mp3" id="bgm" autoplay="autoplay" preload="auto" loop style="display:none; height:0;"></audio>
+<div class="page pageIndex">
+	<div class="h832">
+    	<div class="innerDiv">
+        <div class="infoStep1">
+        	<img src="images/infoBg.jpg" class="abs bgImg">
+            <input type="tel" class="infoTxt infoTxt1" maxlength="11">
+            <input type="email" class="infoTxt infoTxt2">
+            <a href="javascript:void(0);" onClick="sumbitInfo();" class="abs infoBtn"><img src="images/infoBtn.png"></a>
+        </div>
+            <img src="images/infoImg2a.jpg" class="abs bgImg infoImg2a" style="display:none;">
+            <img src="images/infoImg2b.png" class="abs bgImg infoImg2b" style="display:none;">
+        </div>
+    </div>
+</div>
+<a href="javascript:void(0);" class="bmgBtn" onClick="bgmCon();"><img src="images/musicBtn1.png" class="bgm1 bgm1Act"></a>
+
+<script>
+function sumbitInfo(){
+	var iTel=$.trim($('.infoTxt1').val());
+	var iEmail=$.trim($('.infoTxt2').val());
+	if(iTel==''&&iEmail==''){
+		alert('请输入手机或者电子邮箱');
+		return;
+		}
+		else{
+			infoAct();
+			}
+	}
+</script>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?eed53277dbc146d66a0a41c91cce8481";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</body>
+</html>
