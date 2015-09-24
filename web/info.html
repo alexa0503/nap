@@ -31,7 +31,7 @@
 </head>
 
 <body>
-<audio src="images/bgm.mp3" id="bgm" autoplay="autoplay" preload="auto" loop style="display:none; height:0;"></audio>
+<audio src="images/bgm.mp3" id="bgm" autoplay preload="auto" loop style="display:none; height:0;"></audio>
 <div class="page pageIndex">
 	<div class="h832">
     	<div class="innerDiv">
@@ -41,8 +41,7 @@
             <input type="email" class="infoTxt infoTxt2">
             <a href="javascript:void(0);" onClick="sumbitInfo();" class="abs infoBtn"><img src="images/infoBtn.png"></a>
         </div>
-            <img src="images/infoImg2a.jpg" class="abs bgImg infoImg2a" style="display:none;">
-            <img src="images/infoImg2b.png" class="abs bgImg infoImg2b" style="display:none;">
+            <img src="images/infoImg3.jpg" class="abs bgImg infoImg2a" style="display:none;">
         </div>
     </div>
 </div>
@@ -53,13 +52,19 @@ function sumbitInfo(){
 	var iTel=$.trim($('.infoTxt1').val());
 	var iEmail=$.trim($('.infoTxt2').val());
 	if(iTel==''&&iEmail==''){
-		alert('请输入手机或者电子邮箱');
-		return;
-		}
-		else{
-			infoAct();
-			}
+    	alert('请输入手机或者电子邮箱');
+    	return;
 	}
+	else{
+        $.post('/post',{email:iEmail,mobile:iTel}, function(json){
+            if(json.ret == 0)
+                infoAct();
+            else
+                alert(json.msg);
+        },"JSON")
+
+	}
+}
 </script>
 
 <script>
@@ -67,7 +72,7 @@ var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
   hm.src = "//hm.baidu.com/hm.js?eed53277dbc146d66a0a41c91cce8481";
-  var s = document.getElementsByTagName("script")[0]; 
+  var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>

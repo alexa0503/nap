@@ -7,19 +7,22 @@ class Wechat {
     private $appSecret;
     private $path;
     private $request;
+    private $container;
 
     public function __construct($appId, $appSecret) {
         $this->appId = $appId;
         $this->appSecret = $appSecret;
-        $this->path = dirname(__file__);
         $this->request = new Request();
+        $this->path = $this->request->getBasePath();
     }
 
-    public function getSignPackage() {
+    public function getSignPackage($url = null) {
         $jsapiTicket = $this->getJsApiTicket();
         // 注意 URL 一定要动态获取，不能 hardcode.
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-        $url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        if( null == $url){
+          $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+          $url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        }
 
         $timestamp = time();
         $nonceStr = $this->createNonceStr();
@@ -51,8 +54,14 @@ class Wechat {
 
     private function getJsApiTicket() {
         // jsapi_ticket 应该全局存储与更新，以下代码以写入到文件中做示例
-        $data = @json_decode(@file_get_contents($this->path."/jsapi_ticket.json"));
-        if (null == $data || $data->expire_time < time()) {
+        $data = @json_decode(@file_get_contents($this->path."jsapi_ticket.json"));
+        if( null == $data){
+            $data = (object)array(
+                'expire_time'=>0,
+                'jsapi_ticket'=>'',
+            );
+        }
+        if ($data->expire_time < time()) {
             $accessToken = $this->getAccessToken();
             // 如果是企业号用以下 URL 获取 ticket
             // $url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=$accessToken";
@@ -62,7 +71,7 @@ class Wechat {
             if ($ticket) {
                 $data->expire_time = time() + 7000;
                 $data->jsapi_ticket = $ticket;
-                $fp = fopen($this->path."/jsapi_ticket.json", "w");
+                $fp = fopen($this->path."jsapi_ticket.json", "w");
                 fwrite($fp, json_encode($data));
                 fclose($fp);
             }
@@ -75,8 +84,14 @@ class Wechat {
 
     public function getAccessToken() {
         // access_token 应该全局存储与更新，以下代码以写入到文件中做示例
-        $data = @json_decode(@file_get_contents($this->path."/access_token.json"));
-        if (null == $data || $data->expire_time < time()) {
+        $data = @json_decode(@file_get_contents($this->path."access_token.json"));
+        if( null == $data){
+            $data = (object)array(
+                'expire_time'=>0,
+                'access_token'=>'',
+            );
+        }
+        if ($data->expire_time < time()) {
             // 如果是企业号用以下URL获取access_token
             // $url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=$this->appId&corpsecret=$this->appSecret";
             $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appSecret";
@@ -85,7 +100,7 @@ class Wechat {
             if ($access_token) {
                 $data->expire_time = time() + 7000;
                 $data->access_token = $access_token;
-                $fp = fopen($this->path."/access_token.json", "w");
+                $fp = fopen($this->path."access_token.json", "w");
                 fwrite($fp, json_encode($data));
                 fclose($fp);
             }
@@ -97,13 +112,13 @@ class Wechat {
     public function refreshToken()
     {
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appSecret";
-        $data = json_decode(file_get_contents($this->path."/access_token.json"));
+        $data = json_decode(file_get_contents($this->path."access_token.json"));
         $res = json_decode($this->httpGet($url));
         $access_token = $res->access_token;
         if ($access_token) {
             $data->expire_time = time() + 7000;
             $data->access_token = $access_token;
-            $fp = fopen($this->path."/access_token.json", "w");
+            $fp = fopen($this->path."access_token.json", "w");
             fwrite($fp, json_encode($data));
             fclose($fp);
         }

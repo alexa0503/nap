@@ -35,3 +35,8 @@
 
 # Composer PHAR
 /composer.phar
+
+
+#json
+/web/jsapi_ticket.json
+/web/access_token.json

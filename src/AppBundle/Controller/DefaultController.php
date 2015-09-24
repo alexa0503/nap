@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 
-use AppBundle\Wechat\Wechat;
+use AppBundle\Wechat;
 use Imagine\Gd\Imagine;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,6 +23,26 @@ class DefaultController extends Controller
 	{
 		return $this->redirect('index.html');
 		//return $this->render('AppBundle:default:index.html.twig');
+	}
+	/**
+	 * @Route("/sign", name="_sign")
+	 */
+	public function signAction(Request $request)
+	{
+		if( null == $request->get('url')){
+			return new Response('');
+		}
+		//$url = urldecode($request->get('url'));
+		$appId = $this->container->getParameter('wechat_appid');
+		$appSecret = $this->container->getParameter('wechat_secret');
+		$wechat = new Wechat\Wechat($appId, $appSecret);
+		$wx = (array)$wechat->getSignPackage(urldecode($request->get('url')));
+		//var_dump($wx);
+		$wx['shareTitle'] = '你有一个来自 NET-A-PORTER 颇特女士的下午茶邀请';
+		$wx['shareDesc'] = '邀请全城摩登客开启一段舌尖与视觉碰撞的时尚之旅';
+		$wx['shareUrl'] = 'http://'.$request->getHost().'/';
+		$wx['imgUrl'] = 'http://'.$request->getHost().'/images/share.jpg';
+		return new Response(json_encode($wx));
 	}
 	/**
 	 * @Route("/post", name="_post")
@@ -64,15 +84,12 @@ class DefaultController extends Controller
 			}
 			else{
 				$info = new Entity\Info;
-				$info->setUsername($request->get('username'));
 				$info->setEmail($request->get('email'));
 				$info->setMobile($request->get('mobile'));
-				$info->setJob($request->get('job'));
 				$info->setCreateIp($request->getClientIp());
 				$info->setCreateTime(new \DateTime('now'));
 				$em->persist($info);
 				$em->flush();
-				$officer = $session->get('officer');
 			}
 		}
 		else{

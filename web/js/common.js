@@ -65,23 +65,26 @@ function addShake(){
 	
 function indexAct(){
 	$('.indexImg1b').fadeIn(1000);
+	$('.indexImg1').fadeIn(1000);
 	setTimeout(function(){
-		$('.indexImg1').fadeIn(1000);
 		setTimeout(function(){
-			$('.popBg').fadeIn(500);
+			//$('.popBg').fadeIn(500);
 			$('.indexImg2').addClass('indexImg2Act1');
 			$('.page1').fadeIn(1000);
 			setTimeout(function(){
-				$('.popBg').fadeOut(1000);
+				//$('.popBg').fadeOut(1000);
 				},1500);
-			},1500);
-		},1000);
+			},500);
+		},500);
 	}
 	
 function goPage2(){
+	$('.indexImg1').fadeOut(100);
+	$('.indexImg1b').fadeOut(100);
+	$('.blackBg').fadeIn(100);
 	$('.page1').addClass('indexImg2Act');
 	setTimeout(function(){
-		$('.page2').show();
+		$('.page2').fadeIn(500);
 		$('.page1').hide();
 		addShake();
 		},1100);
@@ -89,9 +92,14 @@ function goPage2(){
 
 function goPage2b(){
 	$('.pageNoetA').fadeOut(500);
-	$('.pageNoetB').fadeIn(500);
+	//$('.pageNoetB').fadeIn(500);
 	$('.page2Img1').fadeOut(500);
-	$('.page2Img2Img').bind('touchend',function(){goPage3();});
+	//$('.page2Img2Img').bind('touchend',function(){goPage3();});
+	
+	setTimeout(function(){
+		goPage3();
+		},1000);
+	
 	//.touchwipe({
 //		min_move_x: 40, //横向灵敏度
 //		min_move_y: 40, //纵向灵敏度
@@ -106,12 +114,15 @@ function goPage3(){
 	$('.indexImg1').hide();
 	$('.indexImg1b').hide();
 	$('.page2').addClass('leftDownHide');
-	$('.popBg').fadeIn(500);
+	//$('.popBg').fadeIn(500);
+	
+	$('.page3').fadeIn(500);
+	
 	setTimeout(function(){
 		$('.page2').hide();
-		$('.popBg').fadeOut(500)
-		},1100);
-	$('.page3').fadeIn(500);
+		//$('.popBg').fadeOut(500);
+		$('.page3Bg2').addClass('downShow').show();
+		},600);
 	$('.page3Img1').touchwipe({
 		min_move_x: 40, //横向灵敏度
 		min_move_y: 40, //纵向灵敏度
@@ -126,12 +137,12 @@ function goPage3(){
 	}
 	
 function goPage3b(){
-	$('.page3Bg').fadeOut(500);
+	//$('.page3Bg').fadeOut(500);
 	$('.page3Img1').fadeOut(500);
 	setTimeout(function(){
-		$('.page3Bg').fadeIn(500);
-		$('.page3Img2').fadeIn(1000);
-		},500);
+		//$('.page3Bg').fadeIn(500);
+		$('.page3Img2').addClass('downShow').show();
+		},600);
 	$('.page3Img2').touchwipe({
 		min_move_x: 40, //横向灵敏度
 		min_move_y: 40, //纵向灵敏度
@@ -146,11 +157,12 @@ function goPage3b(){
 	}
 	
 function goPage3c(){
-	$('.page3Bg').fadeOut(500);
+	//$('.page3Bg').fadeOut(500);
+	$('.page3Bg2').removeClass('downShow').fadeOut(500);
 	$('.page3Img2').fadeOut(500);
 	setTimeout(function(){
-		$('.page3Bg').fadeIn(500);
-		$('.page3Img3').fadeIn(1000);
+		//$('.page3Bg').fadeIn(500);
+		$('.page3Img3').fadeIn(500);
 		},500);
 	$('.page3Img3').touchwipe({
 		min_move_x: 40, //横向灵敏度
@@ -166,22 +178,21 @@ function goPage3c(){
 	}
 	
 function goPage3d(){
-	$('.page3Bg').fadeOut(500);
-	setTimeout(function(){
-		$('.page3Bg2').fadeIn(500);
-		$('.page3Img4').fadeIn(1000);
-		$('.page3Btn1').fadeIn(1000);
-		},500);
 	$('.page3Img3').fadeOut(500);
+	//$('.page3Bg').fadeOut(500);
+	setTimeout(function(){
+		//$('.page3Bg2').fadeIn(500);
+		$('.page3Img4').addClass('downShow').show();
+		setTimeout(function(){
+			$('.page3Btn1').addClass('downShow').show();
+			},200);
+		},500);
 	$('.downArrow').hide();
 	}
 	
 function infoAct(){
 	$('.infoStep1').hide();
-	$('.infoImg2a').addClass('infoImg2aAct').show();
-	setTimeout(function(){
-		$('.infoImg2b').fadeIn(1000);
-		},1500);
+	$('.infoImg2a').fadeIn(500);
 	}
 	
 isPlay=true;

@@ -55,7 +55,7 @@ class AdminController extends Controller
 				$infos = $queryBuilder->getQuery()->getResult();
 
 				$phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
-				
+
 				//$phpExcelObject = new \PHPExcel();
 				$phpExcelObject->getProperties()->setCreator("liuggio")
 						->setLastModifiedBy("Giulio De Donato")
@@ -66,23 +66,19 @@ class AdminController extends Controller
 						->setCategory("Test result file");
 				$phpExcelObject->setActiveSheetIndex(0)
 					->setCellValue('A1', 'ID')
-					->setCellValue('B1', '用户名')
-					->setCellValue('C1', 'Email')
-					->setCellValue('D1', '手机号')
-					->setCellValue('E1', '职务')
-					->setCellValue('F1', '提交时间')
-					->setCellValue('G1', '提交IP');
+					->setCellValue('B1', 'Email')
+					->setCellValue('C1', '手机号')
+					->setCellValue('D1', '提交时间')
+					->setCellValue('E1', '提交IP');
 				foreach($infos as $k=>$v){
 						$phpExcelObject->setActiveSheetIndex(0)
 							->setCellValue('A'.($k+2), $v->getId())
-							->setCellValue('B'.($k+2), $v->getUsername())
-							->setCellValue('C'.($k+2), $v->getEmail())
-							->setCellValue('D'.($k+2), $v->getMobile())
-							->setCellValue('E'.($k+2), $v->getJob())
-							->setCellValue('F'.($k+2), $v->getCreateTime()->format('Y-m-d H:i:s'))
-							->setCellValue('G'.($k+2), $v->getCreateIp());
+							->setCellValue('B'.($k+2), $v->getEmail())
+							->setCellValue('C'.($k+2), $v->getMobile())
+							->setCellValue('D'.($k+2), $v->getCreateTime()->format('Y-m-d H:i:s'))
+							->setCellValue('E'.($k+2), $v->getCreateIp());
 				}
-				
+
 				$phpExcelObject->getActiveSheet()->setTitle('用户信息');
 				// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 				$phpExcelObject->setActiveSheetIndex(0);
@@ -100,7 +96,7 @@ class AdminController extends Controller
 				$response->headers->set('Pragma', 'public');
 				$response->headers->set('Cache-Control', 'maxage=1');
 				$response->headers->set('Content-Disposition', $dispositionHeader);
-				
+
 				/*
 				$arr = array(
 						'id,用户名,Email,手机,职务,时间,IP'
